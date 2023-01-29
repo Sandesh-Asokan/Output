@@ -1,0 +1,90 @@
+<html>
+  <body>
+    <h1>RSA Algorithm</h1>
+    <table>
+      <tr>
+        <td>Enter First Prime Number:</td>
+        <td><input type="number" id="p" /></td>
+      </tr>
+      <tr>
+        <td>Enter Second Prime Number:</td>
+        <td><input type="number" id="q" /></td>
+      </tr>
+      <tr>
+        <td>Enter the Message:</td>
+        <td><input type="number" id="msg" /></td>
+      </tr>
+      <tr>
+        <td>Public Key:</td>
+        <td>
+          <p id="publickey"></p>
+        </td>
+      </tr>
+      <tr>
+        <td>Private Key:</td>
+        <td>
+          <p id="privatekey"></p>
+        </td>
+      </tr>
+      <tr>
+        <td>Cipher Text:</td>
+        <td>
+          <p id="ciphertext"></p>
+        </td>
+      </tr>
+      <tr>
+        <td>Decipher Text:</td>
+        <td>
+          <p id="deciphertext"></p>
+        </td>
+      </tr>
+      <tr>
+        <td><button onclick="RSA();">Apply RSA</button></td>
+      </tr>
+    </table>
+  </body>
+
+  <script>
+    function RSA() {
+      var gcd, p, q, m, n, t, e, i, x;
+      gcd = function (a, b) {
+        return !b ? a : gcd(b, a % b);
+      };
+
+      p = document.getElementById("p").value;
+      q = document.getElementById("q").value;
+      m = document.getElementById("msg").value;
+      n = p * q;
+      t = (p - 1) * (q - 1);
+
+      //Selecting public key e
+      for (e = 2; e < t; e++) {
+        if (gcd(e, t) == 1) {
+          break;
+        }
+      }
+
+      //Computing private key d
+      for (i = 0; i < 10; i++) {
+        x = 1 + i * t;
+        if (x % e == 0) {
+          d = x / e;
+          break;
+        }
+      }
+
+      ctt = Math.pow(m, e).toFixed(0);
+      ct = ctt % n;
+      // c=m^e mod n
+
+      dtt = Math.pow(ct, d).toFixed(0);
+      dt = dtt % n;
+      // m=c^d mod n
+
+      document.getElementById("publickey").innerHTML = e;
+      document.getElementById("privatekey").innerHTML = d;
+      document.getElementById("ciphertext").innerHTML = ct;
+      document.getElementById("deciphertext").innerHTML = dt;
+    }
+  </script>
+</html>
